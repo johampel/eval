@@ -5,4 +5,5 @@
   <policy>MAX</policy>
   <autoIncrementPatch>true</autoIncrementPatch>
   <useDirty>true</useDirty>
+  <nonQualifierBranches>main</nonQualifierBranches>
 </configuration>
