@@ -196,52 +196,56 @@ public class ParserFactory {
    * (expressions mentioned first have higher priority than the others.
    *
    * <table>
-   *   <tr>
-   *     <th>Type</th>
-   *     <th>Description</th>
-   *     <th>Examples</th>
-   *   </tr>
-   *   <tr>
-   *     <td>Value</td>
-   *     <td>Floating point number, including numbers with e-notation</td>
-   *     <td>{@code 1.2}, or {@code 1.2e-34}</td>
-   *   </tr>
-   *   <tr>
-   *     <td>ValueName</td>
-   *     <td>ValueName names; must be known to the {@code context} at time of parsing</td>
-   *     <td>{@code ab}, or {@code x}</td>
-   *   </tr>
-   *   <tr>
-   *     <td>Unary {@code +} and {@code -}</td>
-   *     <td>Positive or negative sign</td>
-   *     <td>{@code -ab}, or {@code +123}</td>
-   *   </tr>
-   *   <tr>
-   *     <td>{@code (...)}</td>
-   *     <td>Grouping with parenthesis</td>
-   *     <td>{@code (2+3)*5}</td>
-   *   </tr>
-   *   <tr>
-   *     <td>{@code fn(...)}</td>
-   *     <td>Function calls; function anmes must be known to the {@code context} at time of parsing</td>
-   *     <td>{@code sin(x)}</td>
-   *   </tr>
-   *   <tr>
-   *     <td>{@code ^}</td>
-   *     <td>Power of, right associative</td>
-   *     <td>{@code 2^3}</td>
-   *   </tr>
-   *   <tr>
-   *     <td>Binaray {@code *} and {@code /}</td>
-   *     <td>Multiplication and division, left associative</td>
-   *     <td>{@code 2 * 3 / 4}</td>
-   *   </tr>
-   *   <tr>
-   *     <td>Binary {@code +} and {@code -}</td>
-   *     <td>Addtion and substraction, left associative</td>
-   *     <td>{@code 2 + 3 - 4}</td>
-   *   </tr>
-   *
+   *   <caption>Examples</caption>
+   *   <thead>
+   *      <tr>
+   *        <th>Type</th>
+   *        <th>Description</th>
+   *        <th>Examples</th>
+   *      </tr>
+   *   </thead>
+   *   <tbody>
+   *     <tr>
+   *       <td>Value</td>
+   *       <td>Floating point number, including numbers with e-notation</td>
+   *       <td>{@code 1.2}, or {@code 1.2e-34}</td>
+   *     </tr>
+   *     <tr>
+   *       <td>ValueName</td>
+   *       <td>ValueName names; must be known to the {@code context} at time of parsing</td>
+   *       <td>{@code ab}, or {@code x}</td>
+   *     </tr>
+   *     <tr>
+   *       <td>Unary {@code +} and {@code -}</td>
+   *       <td>Positive or negative sign</td>
+   *       <td>{@code -ab}, or {@code +123}</td>
+   *     </tr>
+   *     <tr>
+   *       <td>{@code (...)}</td>
+   *       <td>Grouping with parenthesis</td>
+   *       <td>{@code (2+3)*5}</td>
+   *     </tr>
+   *     <tr>
+   *       <td>{@code fn(...)}</td>
+   *       <td>Function calls; function anmes must be known to the {@code context} at time of parsing</td>
+   *       <td>{@code sin(x)}</td>
+   *     </tr>
+   *     <tr>
+   *       <td>{@code ^}</td>
+   *       <td>Power of, right associative</td>
+   *       <td>{@code 2^3}</td>
+   *     </tr>
+   *     <tr>
+   *       <td>Binaray {@code *} and {@code /}</td>
+   *       <td>Multiplication and division, left associative</td>
+   *       <td>{@code 2 * 3 / 4}</td>
+   *     </tr>
+   *     <tr>
+   *       <td>Binary {@code +} and {@code -}</td>
+   *       <td>Addtion and substraction, left associative</td>
+   *       <td>{@code 2 + 3 - 4}</td>
+   *     </tr>
+   *   </tbody>
    * </table>
    * <p>
    * Please obey the following:
@@ -359,7 +363,7 @@ public class ParserFactory {
    * assigns to each operator a function, that describes how to calculate the result.
    * <p>
    * An example could be:
-   * <pre><tt>
+   * <pre><code>
    *     binaryRightAssocOperatorParser(
    *         argumentParser,
    *         argumentParser,
@@ -369,7 +373,7 @@ public class ParserFactory {
    *         )
    *     );
    *
-   * </tt></pre>
+   * </code></pre>
    *
    * @param leftParser      The {@code Parser} to use to parse the all except the right most
    *                        argument, must produce an {@code Expression}
@@ -422,7 +426,7 @@ public class ParserFactory {
    * assigns to each operator a function, that describes how to calculate the result.
    * <p>
    * An example could be:
-   * <pre><tt>
+   * <pre><code>
    *     binaryLeftAssocOperatorParser(
    *         argumentParser,
    *         argumentParser,
@@ -432,7 +436,7 @@ public class ParserFactory {
    *         )
    *     );
    *
-   * </tt></pre>
+   * </code></pre>
    *
    * @param leftParser      The {@code Parser} to use to parse the left most argument, must produce
    *                        an {@code Expression}
@@ -478,7 +482,7 @@ public class ParserFactory {
    * assigns to each operator a function, that describes how to calculate the result.
    * <p>
    * An example could be:
-   * <pre><tt>
+   * <pre><code>
    *     unaryOperatorParser(
    *         argumentParser,
    *         Map.of(
@@ -487,7 +491,7 @@ public class ParserFactory {
    *         )
    *     );
    *
-   * </tt></pre>
+   * </code></pre>
    *
    * @param argParser       The {@code Parser} to use for the argument, must produce an
    *                        {@code Expression}
@@ -526,44 +530,51 @@ public class ParserFactory {
    * All in all, the allowed notation are the same like in Java. So, the following are valid
    * examples for tokens accepted:
    * <table>
-   *   <th>Input</th>
-   *   <th>Token with exponent</th>
-   *   <th>Token without exponent</th>
-   *   <tr>
-   *     <td>12.34</td>
-   *     <td>12.34</td>
-   *     <td>12.34</td>
-   *   </tr>
-   *   <tr>
-   *     <td>12.</td>
-   *     <td>12.</td>
-   *     <td>12.</td>
-   *   </tr>
-   *   <tr>
-   *     <td>12</td>
-   *     <td>12</td>
-   *     <td>12</td>
-   *   </tr>
-   *   <tr>
-   *     <td>.34</td>
-   *     <td>.34</td>
-   *     <td>.34</td>
-   *   </tr>
-   *   <tr>
-   *     <td>12.34e56</td>
-   *     <td>12.34e56</td>
-   *     <td>12.34</td>
-   *   </tr>
-   *   <tr>
-   *     <td>12.34E+56</td>
-   *     <td>12.34E+56</td>
-   *     <td>12.34</td>
-   *   </tr>
-   *   <tr>
-   *     <td>12.34e-56</td>
-   *     <td>12.34e-56</td>
-   *     <td>12.34</td>
-   *   </tr>
+   *   <caption>Examples</caption>
+   *    <thead>
+   *      <tr>
+   *        <th>Input</th>
+   *        <th>Token with exponent</th>
+   *        <th>Token without exponent</th>
+   *      </tr>
+   *    </thead>
+   *    <tbody>
+   *      <tr>
+   *        <td>12.34</td>
+   *        <td>12.34</td>
+   *        <td>12.34</td>
+   *      </tr>
+   *      <tr>
+   *        <td>12.</td>
+   *        <td>12.</td>
+   *        <td>12.</td>
+   *      </tr>
+   *      <tr>
+   *        <td>12</td>
+   *        <td>12</td>
+   *        <td>12</td>
+   *      </tr>
+   *      <tr>
+   *        <td>.34</td>
+   *        <td>.34</td>
+   *        <td>.34</td>
+   *      </tr>
+   *      <tr>
+   *        <td>12.34e56</td>
+   *        <td>12.34e56</td>
+   *        <td>12.34</td>
+   *      </tr>
+   *      <tr>
+   *        <td>12.34E+56</td>
+   *        <td>12.34E+56</td>
+   *        <td>12.34</td>
+   *      </tr>
+   *      <tr>
+   *         <td>12.34e-56</td>
+   *         <td>12.34e-56</td>
+   *         <td>12.34</td>
+   *      </tr>
+   *   </tbody>
    * </table>
    *
    * @param allowExponent {@code true}, if allowing an exponent
