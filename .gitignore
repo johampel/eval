@@ -1,0 +1,20 @@
+# Build
+target/
+logs/
+pom.xml.versionsBackup
+.repository
+
+# Intellij
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.factorypath
+.project
+.settings/
+
+# vi(m)
+*.swp
+
+.DS_Store
