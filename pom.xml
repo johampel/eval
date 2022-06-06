@@ -18,6 +18,14 @@
     <url>https://github.com/johampel/eval/</url>
   </scm>
 
+  <developers>
+    <developer>
+      <name>Johannes Hampel</name>
+      <organization>Johannes Hampel</organization>
+      <email>johannes@hipphampel.de</email>
+    </developer>
+  </developers>
+
   <licenses>
     <license>
       <name>MIT License</name>
@@ -194,7 +202,7 @@
                 <id>attach-doc</id>
                 <phase>verify</phase>
                 <goals>
-                  <goal>javadoc-no-fork</goal>
+                  <goal>jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -226,10 +234,5 @@
       <id>ossrh</id>
       <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
-<!--    <repository>-->
-<!--      <id>github</id>-->
-<!--      <name>GitHub johampel Apache Maven Packages</name>-->
-<!--      <url>https://maven.pkg.github.com/johampel/eval</url>-->
-<!--    </repository>-->
   </distributionManagement>
 </project>
