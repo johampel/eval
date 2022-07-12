@@ -6,38 +6,38 @@ This library is intended to evaluate math expressions for complex and real numbe
 
 Before starting you have to add this library as a dependency to your project, for example
 for maven based projects, add the following to the `dependencies` section:
-
+```xml
     <dependency>
       <groupId>de.hipphampel.eval</groupId>
       <artifactId>eval</artifactId>
       <version> -- Place current version here -- </version>
     </dependency>
-
+```
 Having that in place, you should be able to write something like this, to evaluate
 a simple expression:
-
+```java
     DoubleContext context = DoubleContext.standard();
     double result = context.evaluate("(2+3)*5");
     System.err.println(result);                        // prints "25.0"
-
+```
 So all you have to do is to create a `DoubleContext` and call the `evaluate` method on it. In a
 context created this way there are also some commonly used constants and functions, so it is
 also perfect to write:
-
+```java
     result = context.evaluate("sin(pi/2)");   // Calculate sine of pi/2, or sine of 90 degrees
     System.err.println(result);               // prints "1.0"
-
+```
 A detailed list of the predefined constants and functions can be found in the following sections.
 You may like define your own constants or functions as well:
-
+```java
     context.constant("two", 2.0)
            .function("f", List.of("x", "y"), "x^y + y^x"); // f(x,y) = x^y + y^x
     result = context.evaluate("f(two, 3)");
     System.err.println(result);                            // prints "17.0"
-
+```
 It is also possible to define variables; in opposite to constants the value of a variable can be
 changed:
-
+```java
     context.variable("x", 1.0);
     result = context.evaluate("f(x, two)");
     System.err.println(result);              // prints "3.0"
@@ -45,7 +45,7 @@ changed:
     context.variable("x", 2.0);
     result = context.evaluate("f(x, two)");
     System.err.println(result);              // prints "8.0"
-
+```
 All in all a context acts as an object that is able to evaluate expressions and contains definitions
 for functions, variables, and constants.
 
@@ -62,11 +62,11 @@ Complex numbers are represented by `Apcomplex` from the [apfloat project](http:/
 to represent number. So, if you want to deal with complex numbers, use the `ApcomplexContext`
 instead of a `DoubleContext`,
 like this:
-
+```java
     ApcomplexContext context = ApcomplexContext.standard();
     Apcomplex result = context.evaluate("(-1)^0.5");
     System.err.println(result);                        // prints "(0.0, 1.0)", means 0.0+1.0i
-
+```
 Note that there are also overloaded version of `ApcomplexContext.standard`
 or `ApcomplexContext.minimal`
 to specify an alternative precision instead of the default one with 100.
@@ -114,19 +114,18 @@ If you what to define your own functions, you have basically two choices:
 
 The most simple way is to define it via a parseable expression. For example, in case you want to
 define the geometric mean of two values `x` and `y`, you may define a function like this:
-
+```java
     //               function name, function parameters, definition
     context.function("geomean",     List.of("x", "y"),   (x*y)^0.5);
-
+```
 After this you may write:
-
+```java
     context.evaluate("geomean(4, 3)"); // Something like 3.46...
-
+```
 If this is not sufficient, you may decide to implement the interface `FunctionDefinition` on your
 own. The following defines also `geomean` but now accepting as many parameters you like:
-
+```java
     public class Geomean implements FunctionDefinition {
-    
         @Override
         public String name() { return "geomean"; }
     
@@ -138,18 +137,18 @@ own. The following defines also `geomean` but now accepting as many parameters y
     
         @Override
         public Apcomplex evaluate(Context<?, ?> context, List<Apcomplex> args) {
-          FixedPrecisionApcomplexHelper helper = context.precisionHelper();
-          Apcomplex product = args.stream().reduce(Apcomplex.ONE, helper::multiply);
-          Apcomplex exp = helper.divide(Apcomplex.ONE, new Apcomplex(new Apfloat(args.size()))); 
-          return context.precisionHelper().pow(product, exp);
+            FixedPrecisionApcomplexHelper helper = context.precisionHelper();
+            Apcomplex product = args.stream().reduce(Apcomplex.ONE, helper::multiply);
+            Apcomplex exp = helper.divide(Apcomplex.ONE, new Apcomplex(new Apfloat(args.size()))); 
+            return context.precisionHelper().pow(product, exp);
         }
     }
-
+```
 After this you may write:
-
+```java
     context.function(new Geomean());
     context.evaluate("geomean(4, 6, 7, 2, 3)"); 
-
+```
 Note that when implementing `FunctionDefinition` you always have to compute with `Apcomplex`.
 
 # Parsing
@@ -189,10 +188,10 @@ Especially two aspects might be a little bit surprising and/or cumbersome:
 ## Parse mode `SIMPLIFIED`
 
 The simplified parse mode can be activated by calling the `parseMode` method of the context, like:
-
+```java
     ApcomplexContext context = ApcomplexContext.standard()
         .parseMode(ParseMode.SIMPLIFIED);
-
+```
 This simplified mode has some similarities with the standard mode - in fact all expressions
 parseable
 in the standard mode can be parse in mode simplified as well - but there are also some noteable
