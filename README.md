@@ -20,7 +20,7 @@ a simple expression:
     double result = context.evaluate("(2+3)*5");
     System.err.println(result);                        // prints "25.0"
 ```
-So all you have to do is to create a `DoubleContext` and call the `evaluate` method on it. In a
+So all you have to do is to create a `DoubleContext` and call the `evaluate` method on it. In the
 context created this way there are also some commonly used constants and functions, so it is
 also perfect to write:
 ```java
@@ -52,33 +52,31 @@ for functions, variables, and constants.
 ## Other types than `double`
 
 In the quick start we learnt how to do evaluations for the data type `double`, which is quite handy
-since this type is a primitive; but sometime this is not sufficient: maybe you want to make your
+since this type is a primitive; but sometime this is not sufficient: maybe you want to perform your
 computations based on complex numbers or with a higher precision than `double` supports.
 
 For this there is also a support for other types than `double`, one example is the support for
 complex numbers:
 
-Complex numbers are represented by `Apcomplex` from the [apfloat project](http://www.apfloat.org/)
-to represent number. So, if you want to deal with complex numbers, use the `ApcomplexContext`
-instead of a `DoubleContext`,
+Complex numbers are represented by `Apcomplex` from the [apfloat project](http://www.apfloat.org/). 
+So, if you want to deal with complex numbers, use the `ApcomplexContext` instead of a `DoubleContext`,
 like this:
 ```java
     ApcomplexContext context = ApcomplexContext.standard();
     Apcomplex result = context.evaluate("(-1)^0.5");
     System.err.println(result);                        // prints "(0.0, 1.0)", means 0.0+1.0i
 ```
-Note that there are also overloaded version of `ApcomplexContext.standard`
-or `ApcomplexContext.minimal`
-to specify an alternative precision instead of the default one with 100.
+Note that there are also overloaded versions of `ApcomplexContext.standard`
+or `ApcomplexContext.minimal` to specify an alternative precision instead of the default one with 34.
 
 All in all, the following types are supported:
 
-| Number type  | Context to use      | Remarks                                                    |
-|--------------|---------------------|------------------------------------------------------------|
-| `double`     | `DoubleContext`     | Real numbers, fixed precision of 16 digits                 |
+| Number type  | Context to use      | Remarks                                                   |
+|--------------|---------------------|-----------------------------------------------------------|
+| `double`     | `DoubleContext`     | Real numbers, fixed precision of 16 digits                |
 | `Apcomplex`  | `ApcomplexContext`  | Complex numbers, default precision 34 digits, configurable |
-| `BigDecimal` | `BigDecimalContext` | Real numbers, default precision 34 digits, configurable    |     
-| `Apfloat`    | `ApfloatContext`    | Real numbers, default precision 34< digits, configurable   |
+| `BigDecimal` | `BigDecimalContext` | Real numbers, default precision 34 digits, configurable   |     
+| `Apfloat`    | `ApfloatContext`    | Real numbers, default precision 34 digits, configurable   |
 
 It is also easy to roll your own implementation, by extending the class `Context` which acts as a
 base class for all other implementations.
@@ -149,7 +147,7 @@ After this you may write:
     context.function(new Geomean());
     context.evaluate("geomean(4, 6, 7, 2, 3)"); 
 ```
-Note that when implementing `FunctionDefinition` you always have to compute with `Apcomplex`.
+Note that when implementing `FunctionDefinition` you always have to compute with `Apcomplex` internally.
 
 # Parsing
 
@@ -168,13 +166,13 @@ In the default processing mode, the parser knows the following structures:
 | Values                  | Number literals. In general, any string representation that is common on Java for double values will work                                       | `1`, `1.2`, `.2`, `1.`, `1e3`, `1.2e-4` |
 | Value names             | Names of variables or values. Generally, such names must consist of aplhabetic characters only                                                  | `e`, `pi`, `foo`, `x`                   |
 | Grouping                | Grouping of termss via simple parenthesis                                                                                                       | `(x+y)`                                 |
-| Function calls          | A call to a function                                                                                                                            | `sin(x)`, `f(x+y7, 2)`                  |
-| Unary sign              | A sign                                                                                                                                          | `+1`, `-x`, '+f(x)`                     |
+| Function calls          | A call to a function                                                                                                                            | `sin(x)`, `f(x+y, 2)`                   |
+| Unary sign              | A sign                                                                                                                                          | `+1`, `-x`, `+f(x)`                     |
 | Power of                | Binary operation for power of. The "power of" operator is the `^`sign. The operator is right associative, so `2^3^2` is the same like `2^(3^2)` | `e^x`, `2^3^4`                          |
 | Division/multiplication | Binary operation for multiplication (`*`) and division (`/`). These operators are left associative, so  `2*3*2` is the same like `(2*3)*2`      | `4*x`, `x/y`                            | 
 | Addition/substraction   | Binary operation for addition (`+`) and substraction (`-`). These operators are left associative, so  `2-4+2` is the same like `(2-4)+2`        | `4+x`, `x-y`                            | 
 
-All these structures have have the precedence listed above, so power of is evaluated before
+All these structures have the precedence listed above, so power of is evaluated before
 multiplication and multiplication before addition, so that terms like `a+b*c^d*e` are evaluated in
 their natural order, in this case like `a+((b*(c^d))*e)`.
 
@@ -198,7 +196,7 @@ in the standard mode can be parse in mode simplified as well - but there are als
 differences.
 
 The main difference is the concept of _convenience mulitplication_: Instead of explicitly writting
-the `*` sign to express a multiplication, you are allowed to write `4x` incase you mean `4*x`, or
+the `*` sign to express a multiplication, you are allowed to write `4x` in case you mean `4*x`, or
 `(x+1)(x-1)`, if you actually mean `(x+1)*(x-1)`. This has several implications:
 
 - Having a context knowing the variables or constants `a`,  `b`, `c` and `ab`, then the term `ab`
