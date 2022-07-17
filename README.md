@@ -4,15 +4,20 @@ This library is intended to evaluate math expressions for complex and real numbe
 
 ## Quick start
 
-Before starting you have to add this library as a dependency to your project, for example
-for maven based projects, add the following to the `dependencies` section:
+### Download
+#### Maven
 ```xml
     <dependency>
       <groupId>de.hipphampel.eval</groupId>
       <artifactId>eval</artifactId>
-      <version> -- Place current version here -- </version>
+      <version>VERSION/version>
     </dependency>
 ```
+#### Gradle
+```groovy
+    implementation 'de.hipphampel.eval:eval:VERSION'
+```
+
 Having that in place, you should be able to write something like this, to evaluate
 a simple expression:
 ```java
@@ -217,5 +222,3 @@ the `*` sign to express a multiplication, you are allowed to write `4x` in case 
   precedence as the power of, so that `-2^2` is actually `-4`, because it is parsed as `-(2^2)`.
 
 All other rules are the same like in mode standard.
-
-  
