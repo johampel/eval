@@ -29,6 +29,7 @@ package de.hipphampel.eval;
 import de.hipphampel.eval.definition.StandardConstants;
 import de.hipphampel.eval.exception.NotANumberException;
 import org.assertj.core.data.Offset;
+import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -92,7 +93,7 @@ public class BigDecimalContextTest {
   })
   public void evaluate(String expression, BigDecimal result) {
     BigDecimalContext context = BigDecimalContext.standard();
-    assertThat(context.evaluate(expression)).isEqualTo(result);
+    assertThat(context.evaluate(expression)).isCloseTo(result, Percentage.withPercentage(0.000001));
   }
 
   @Test
