@@ -26,19 +26,17 @@ package de.hipphampel.eval;
  * #L%
  */
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import de.hipphampel.eval.definition.StandardConstants;
 import de.hipphampel.eval.exception.NotANumberException;
-import org.assertj.core.data.Offset;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import java.math.BigDecimal;
-import java.math.MathContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BigDecimalContextTest {
 
