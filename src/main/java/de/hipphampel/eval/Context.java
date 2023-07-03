@@ -12,10 +12,10 @@ package de.hipphampel.eval;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -36,6 +36,7 @@ import de.hipphampel.eval.definition.Variable;
 import de.hipphampel.eval.exception.EvalException;
 import de.hipphampel.eval.exception.ParseException;
 import de.hipphampel.eval.expr.Expression;
+import de.hipphampel.eval.parser.MacroExpander;
 import de.hipphampel.eval.parser.ParseMode;
 import de.hipphampel.eval.parser.ParserFactory;
 import java.util.Arrays;
@@ -67,17 +68,16 @@ import org.petitparser.parser.Parser;
  * which might be functions, constants, or variables.
  * <p>
  * Internally, all computations are done based on the {@link Apcomplex} class, which allows to deal
- * with complex number having a arbitrary precision. Concrete subclasses of this have to implement
+ * with complex number having an arbitrary precision. Concrete subclasses of this have to implement
  * some methods to translate this complex into their own representation. For example, The
  * {@link DoubleContext} implementation translates the number from and to {@code doubles}.
  * <p>
  * Most aspects of this class can be freely configured, such as which constants, variable are known
  * and how to parse expression literals. The only exception is the {@link #precision() precision},
- * which must be specified at construction time and cannot be changed afterwards.
+ * which must be specified at construction time and cannot be changed after construction.
  *
  * @param <V> The type of the value
  * @param <C> The type of the specialisation of this class (technically motivated)
- *
  * @see DoubleContext
  * @see BigDecimalContext
  * @see ApfloatContext
@@ -90,6 +90,7 @@ public abstract class Context<V, C extends Context<V, C>> {
   private final FixedPrecisionApcomplexHelper precisionHelper;
 
   private ParseMode parseMode;
+  private MacroExpander macroExpander;
   private final Map<String, Definition> definitions;
 
   /**
@@ -109,6 +110,7 @@ public abstract class Context<V, C extends Context<V, C>> {
   protected Context(FixedPrecisionApcomplexHelper precisionHelper) {
     this.precisionHelper = Objects.requireNonNull(precisionHelper);
     this.parseMode = ParseMode.STANDARD;
+    this.macroExpander = MacroExpander.NOP;
     this.definitions = new HashMap<>();
   }
 
@@ -157,6 +159,30 @@ public abstract class Context<V, C extends Context<V, C>> {
       return self();
     }
     this.parseMode = Objects.requireNonNull(parseMode);
+    return self();
+  }
+
+  /**
+   * Gets the currently configured {@link MacroExpander}.
+   * <p>
+   * Please refer to {@link MacroExpander} for details
+   *
+   * @return The {@code MacroExpander}
+   */
+  public MacroExpander macroExpander() {
+    return this.macroExpander;
+  }
+
+  /**
+   * Sets the current {@link MacroExpander}.
+   * <p>
+   * Please refer to {@link MacroExpander} for details
+   *
+   * @param macroExpander The new {@code MacroExpander}
+   * @return This instance.
+   */
+  public C macroExpander(MacroExpander macroExpander) {
+    this.macroExpander = macroExpander == null ? MacroExpander.NOP : macroExpander;
     return self();
   }
 
@@ -237,7 +263,8 @@ public abstract class Context<V, C extends Context<V, C>> {
    * @throws ParseException If parsing fails
    */
   public Expression parse(String expression) {
-    Result result = newExpressionParser().parse(expression);
+    String expanded = macroExpander.expand(this, expression);
+    Result result = newExpressionParser().parse(expanded);
     if (result.isFailure()) {
       throw new ParseException(result.getMessage(), result.getPosition());
     }
