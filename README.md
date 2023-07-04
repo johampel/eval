@@ -166,16 +166,16 @@ cumbersome.
 
 In the default processing mode, the parser knows the following structures:
 
-| Type                    | Description                                                                                                                                     | Examples                                |
-|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
-| Values                  | Number literals. In general, any string representation that is common on Java for double values will work                                       | `1`, `1.2`, `.2`, `1.`, `1e3`, `1.2e-4` |
-| Value names             | Names of variables or values. Generally, such names must consist of aplhabetic characters only                                                  | `e`, `pi`, `foo`, `x`                   |
-| Grouping                | Grouping of termss via simple parenthesis                                                                                                       | `(x+y)`                                 |
-| Function calls          | A call to a function                                                                                                                            | `sin(x)`, `f(x+y, 2)`                   |
-| Unary sign              | A sign                                                                                                                                          | `+1`, `-x`, `+f(x)`                     |
+| Type                    | Description                                                                                                                                    | Examples                                |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| Values                  | Number literals. In general, any string representation that is common on Java for double values will work                                      | `1`, `1.2`, `.2`, `1.`, `1e3`, `1.2e-4` |
+| Value names             | Names of variables or values. Generally, such names must consist of aplhabetic characters only                                                 | `e`, `pi`, `foo`, `x`                   |
+| Grouping                | Grouping of terms via simple parenthesis                                                                                                       | `(x+y)`                                 |
+| Function calls          | A call to a function                                                                                                                           | `sin(x)`, `f(x+y, 2)`                   |
+| Unary sign              | A sign                                                                                                                                         | `+1`, `-x`, `+f(x)`                     |
 | Power of                | Binary operation for power of. The "power of" operator is the `^`sign. The operator is right associative, so `2^3^2` is the same like `2^(3^2)` | `e^x`, `2^3^4`                          |
-| Division/multiplication | Binary operation for multiplication (`*`) and division (`/`). These operators are left associative, so  `2*3*2` is the same like `(2*3)*2`      | `4*x`, `x/y`                            | 
-| Addition/substraction   | Binary operation for addition (`+`) and substraction (`-`). These operators are left associative, so  `2-4+2` is the same like `(2-4)+2`        | `4+x`, `x-y`                            | 
+| Division/multiplication | Binary operation for multiplication (`*`) and division (`/`). These operators are left associative, so  `2*3*2` is the same like `(2*3)*2`     | `4*x`, `x/y`                            | 
+| Addition/substraction   | Binary operation for addition (`+`) and substraction (`-`). These operators are left associative, so  `2-4+2` is the same like `(2-4)+2`       | `4+x`, `x-y`                            | 
 
 All these structures have the precedence listed above, so power of is evaluated before
 multiplication and multiplication before addition, so that terms like `a+b*c^d*e` are evaluated in
@@ -221,4 +221,27 @@ the `*` sign to express a multiplication, you are allowed to write `4x` in case 
 - A second precedence rule that differs from the standard is the unary minus, which has a lower
   precedence as the power of, so that `-2^2` is actually `-4`, because it is parsed as `-(2^2)`.
 
-All other rules are the same like in mode standard.
+All other rules are the same as in mode standard.
+
+
+## Macros
+
+A further feature related to parsing are macros. Macros are textual replacements applied before 
+parsing a string to an expression. For example:
+
+```java
+    ApcomplexContext context = ApcomplexContext.standard()
+        .macroExpander(MacroExpander.ENVIRONMENT_VARIABLES);
+    ...
+    context.evaluate("${A}*${B}")
+```
+In the example above, we create a context with a `MacroExpander` that replaces - similar to shell 
+variables - sequences of the form `${...}` with the content of the shell variables. So if `A` and
+`B` were environment variables (accessible via `System.getenv`), the expression `${A}*${B}` is 
+preprocessed so that `A` and  `B` are replaced with the content of the according variables, after 
+that replacement the expression is parsed.
+
+You are free to implement your own `MacroExpander`, this library just provides the implementation 
+shown above, but the `MacroExpander` interface is quite simple and allows also more sophisticated
+implementations.
+
