@@ -111,7 +111,7 @@ public class ParserFactory {
    * <p>
    * The simplified parser has most aspects in common with the parser for mode {@code STANDARD}, but
    * it has some simplification named "convenience multiplication". In general, expressions parsed
-   * by the {@link #expressionParserStandard(Context) expressionParserStandard} produce semantical
+   * by the {@link #expressionParserStandard(Context) expressionParserStandard} produce semantically
    * identical result, but in detail it has some differences regarding the multiplication, power of
    * and  sign operations.
    * <p>
@@ -130,7 +130,7 @@ public class ParserFactory {
    *   variables {@code x} and {@code y}, then the following applies:
    *   <ul>
    *     <li>If the exponent is written in convenience multiplication, the term {@code x^2y}
-   *     is effectively {@code 2^(2*y)}. This might be missleading in more complex situals like
+   *     is effectively {@code 2^(2*y)}. This might be misleading in more complex situations like
    *     {@code 2^(x+1)(x-1)} (which is {@code 2^((x+1)*(x-1)}</li>
    *     <li>If the basis is written in convenience multiplication, the terms are evaluated as
    *     expected: {@code xy^2} is the same as {@code x*y^2}</li>
@@ -193,7 +193,7 @@ public class ParserFactory {
    * It is called "standard", since it follows conventions quite common to most simple parsers.
    * <p>
    * The following table gives an overview about the recognized expressions and their priority
-   * (expressions mentioned first have higher priority than the others.
+   * (expressions mentioned first have higher priority than the others).
    *
    * <table>
    *   <caption>Examples</caption>
@@ -227,7 +227,7 @@ public class ParserFactory {
    *     </tr>
    *     <tr>
    *       <td>{@code fn(...)}</td>
-   *       <td>Function calls; function anmes must be known to the {@code context} at time of parsing</td>
+   *       <td>Function calls; function names must be known to the {@code context} at time of parsing</td>
    *       <td>{@code sin(x)}</td>
    *     </tr>
    *     <tr>
@@ -242,7 +242,7 @@ public class ParserFactory {
    *     </tr>
    *     <tr>
    *       <td>Binary {@code +} and {@code -}</td>
-   *       <td>Addtion and substraction, left associative</td>
+   *       <td>Addtion and subtraction, left associative</td>
    *       <td>{@code 2 + 3 - 4}</td>
    *     </tr>
    *   </tbody>
@@ -318,7 +318,7 @@ public class ParserFactory {
   /**
    * Factory method for creating {@link Parser Parsers} that parse a list of elements.
    * <p>
-   * The returned parser is able to parse a non empty list of objects produced by the
+   * The returned parser is able to parse a non-empty list of objects produced by the
    * {@code headParser} for the first element and {@code tailParser} for all the others, optionally
    * separated by {@code separator}.
    *
@@ -527,7 +527,7 @@ public class ParserFactory {
    * after the significant part indicating the exponent to the base of {@code 10}. Note that the
    * sign of the number is <strong>not</strong> part of the parser.
    * <p>
-   * All in all, the allowed notation are the same like in Java. So, the following are valid
+   * All in all, the allowed notation are the same as in Java. So, the following are valid
    * examples for tokens accepted:
    * <table>
    *   <caption>Examples</caption>
@@ -647,7 +647,7 @@ public class ParserFactory {
 
       List<Expression> args = result.get();
       if (args.size() < definition.minArgs() || args.size() > definition.maxArgs()) {
-        return new Failure(result.getBuffer(), result.getPosition(), "Invalid paramter count");
+        return new Failure(result.getBuffer(), result.getPosition(), "Invalid parameter count");
       }
 
       return new Success(result.getBuffer(), result.getPosition(), new FunctionCall(name, args));
